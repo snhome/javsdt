@@ -24,8 +24,7 @@ def get_directory():
         return get_directory()
     else:
         # askdirectory 获得是 正斜杠 路径C:/，所以下面要把 / 换成 反斜杠\
-        temp_path = work_path.replace('/', '\\')
-        return temp_path
+        return work_path
 
 
 # 调用百度翻译API接口，返回中文简介str
@@ -171,13 +170,13 @@ else:
 nfo_dict = {'空格': ' ', '车牌': 'ABC-123', '标题': '未知标题', '完整标题': '完整标题',
             '发行年月日': '1970-01-01', '发行年份': '1970', '月': '01', '日': '01',
             '片商': '未知片商', '评分': '0', '首个女优': '未知演员', '全部女优': '未知演员',
-            '片长': '0', '\\': '\\', '是否中字': custom_subt, '视频': 'ABC-123', '车牌前缀': 'ABC',
+            '片长': '0', '/': '/', '是否中字': custom_subt, '视频': 'ABC-123', '车牌前缀': 'ABC',
             '是否xx': custom_xx, '影片类型': movie_type, '系列': '未知系列'}  # 用于暂时存放影片信息，女优，标题等
 suren_list = suren_pref.split('、')
 rename_mp4_list = rename_mp4.split('+')
 rename_folder_list = rename_folder.split('+')
 type_tuple = tuple(file_type.split('、'))
-classify_basis_list = classify_basis.split('\\')
+classify_basis_list = classify_basis.split('/')
 title_list = custom_title.replace('标题', '完整标题', 1).split('+')
 fanart_list = custom_fanart.split('+')
 poster_list = custom_poster.split('+')
@@ -195,7 +194,7 @@ for i in classify_basis_list:
         if j not in nfo_dict:
             nfo_dict[j] = j
         classify_list.append(j)
-    classify_list.append('\\')
+    classify_list.append('/')
 for j in title_list:
     if j not in nfo_dict:
         nfo_dict[j] = j
@@ -218,7 +217,7 @@ while start_key == '':
     print('...文件扫描开始...如果时间过长...请避开中午夜晚高峰期...\n')
     #
     if if_classify == '是':
-        classify_root = classify_root.rstrip('\\')
+        classify_root = classify_root.rstrip('/')
         if classify_root != '所选文件夹':
             if classify_root != path:  # 归类根目录和所选不一样，继续核实归类根目录和所选不一样的合法性
                 if classify_root[:2] != path[:2]:
@@ -228,9 +227,9 @@ while start_key == '':
                     print('归类的根目录“', classify_root, '”不存在！无法归类！请修正！')
                     os.system('pause')
             else:  # 一样
-                classify_root = path + '\\归类完成'
+                classify_root = path + '/归类完成'
         else:
-            classify_root = path + '\\归类完成'
+            classify_root = path + '/归类完成'
     #
     fail_times = 0  # 处理过程中错失败的个数
     fail_list = []  # 用于存放处理失败的信息
@@ -302,7 +301,7 @@ while start_key == '':
         for srt in jav_videos:
             car_num = srt.car
             file = srt.name
-            relative_path = '\\' + root.lstrip(path) + '\\' + file  # 影片的相对于所选文件夹的路径，用于报错
+            relative_path = '/' + root.lstrip(path) + '/' + file  # 影片的相对于所选文件夹的路径，用于报错
             try:
                 # 获取nfo信息的jav321搜索网页
                 jav_list[1] = {'sn': car_num}
@@ -362,7 +361,7 @@ while start_key == '':
                 nfo_dict['车牌'] = re.search(r'番.</b>: (.+?)<br>', jav_html).group(1).upper()
                 nfo_dict['车牌前缀'] = nfo_dict['车牌'].split('-')[0]
                 # 去除title中的特殊字符
-                only_title = only_title.replace('\n', '').replace('&', '和').replace('\\', '#') \
+                only_title = only_title.replace('\n', '').replace('&', '和').replace('/', '#') \
                     .replace('/', '#').replace(':', '：').replace('*', '#').replace('?', '？') \
                     .replace('"', '#').replace('<', '【').replace('>', '】') \
                     .replace('|', '#').replace('＜', '【').replace('＞', '】') \
@@ -489,12 +488,12 @@ while start_key == '':
                         cd_msg = '-cd' + str(srt.episodes)
                         new_mp4 += cd_msg
                     # rename 文件名
-                    os.rename(root + '\\' + file, root + '\\' + new_mp4 + video_type)
+                    os.rename(root + '/' + file, root + '/' + new_mp4 + video_type)
                     file = new_mp4 + video_type
                     print('    >修改文件名' + cd_msg + '完成')
                     # 重命名字幕
                     if subt_name and if_rename_subt == '是':
-                        os.rename(root + '\\' + subt_name, root + '\\' + new_mp4 + subt_type)
+                        os.rename(root + '/' + subt_name, root + '/' + new_mp4 + subt_type)
                         subt_name = new_mp4 + subt_type
                         print('    >修改字幕名完成')
 
@@ -504,20 +503,20 @@ while start_key == '':
                 # 1.5 归类影片，只针对影片
                 if if_classify == '是' and file_folder != '文件夹':
                     # 需要归类影片，针对这个影片
-                    class_root = classify_root + '\\'
+                    class_root = classify_root + '/'
                     # 移动的目标文件夹
                     for j in classify_list:
-                        class_root += nfo_dict[j].rstrip(' .')      # C:\\Users\\JuneRain\\Desktop\\测试文件夹\\1\\葵司\\
-                    new_root = class_root              # 新的影片的目录路径，C:\\Users\\JuneRain\\Desktop\\测试文件夹\\1\\葵司\\
-                    new_folder = new_root.split('\\')[-1]  # 新的影片的目录名称，变成了目标目录“葵司”
+                        class_root += nfo_dict[j].rstrip(' .')      # C:/Users/JuneRain/Desktop/测试文件夹/1/葵司/
+                    new_root = class_root              # 新的影片的目录路径，C:/Users/JuneRain/Desktop/测试文件夹/1/葵司/
+                    new_folder = new_root.split('/')[-1]  # 新的影片的目录名称，变成了目标目录“葵司”
                     if not os.path.exists(new_root):   # 不存在目标文件夹
                         os.makedirs(new_root)
-                    jav_new_path = new_root + '\\' + file   # 新的影片路径
+                    jav_new_path = new_root + '/' + file   # 新的影片路径
                     if not os.path.exists(jav_new_path):    # 目标文件夹没有相同的影片
-                        os.rename(root + '\\' + file, jav_new_path)
+                        os.rename(root + '/' + file, jav_new_path)
                         print('    >归类影片文件完成')
                         if subt_name:
-                            os.rename(root + '\\' + subt_name, new_root + '\\' + subt_name)
+                            os.rename(root + '/' + subt_name, new_root + '/' + subt_name)
                             print('    >归类字幕文件完成')
                     else:
                         fail_times += 1
@@ -529,7 +528,7 @@ while start_key == '':
                         continue
                 else:
                     new_root = root  # 当前影片的目录路径，在下面的重命名操作中将发生变化
-                    new_folder = root.split('\\')[-1]  # 当前影片的目录名称，在下面的重命名操作中即将发生变化
+                    new_folder = root.split('/')[-1]  # 当前影片的目录名称，在下面的重命名操作中即将发生变化
 
                 # 2重命名文件夹
                 if if_folder == '是':
@@ -541,10 +540,10 @@ while start_key == '':
                     if separate_folder:
                         if cars_dic[car_num] == 1 or (
                                 cars_dic[car_num] > 1 and cars_dic[car_num] == srt.episodes):  # 同一车牌有多部，且这是最后一部，才会重命名
-                            newroot_list = root.split('\\')
+                            newroot_list = root.split('/')
                             del newroot_list[-1]
-                            upper2_root = '\\'.join(newroot_list)
-                            new_root = upper2_root + '\\' + new_folder  # 当前文件夹就会被重命名
+                            upper2_root = '/'.join(newroot_list)
+                            new_root = upper2_root + '/' + new_folder  # 当前文件夹就会被重命名
                             if not os.path.exists(
                                     new_root) or new_root == root:  # 目标影片文件夹不存在，或者目标影片文件夹存在，但就是现在的文件夹，即新旧相同
                                 # 修改文件夹
@@ -559,18 +558,18 @@ while start_key == '':
                                 write_fail(fail_message)
                                 continue
                     else:
-                        if not os.path.exists(root + '\\' + new_folder):  # 已经存在目标文件夹
-                            os.makedirs(root + '\\' + new_folder)
+                        if not os.path.exists(root + '/' + new_folder):  # 已经存在目标文件夹
+                            os.makedirs(root + '/' + new_folder)
                         # 创建独立的文件夹完成
-                        os.rename(root + '\\' + file, root + '\\' + new_folder + '\\' + file)  # 就把影片放进去
-                        new_root = root + '\\' + new_folder  # 在当前文件夹下再创建新文件夹
+                        os.rename(root + '/' + file, root + '/' + new_folder + '/' + file)  # 就把影片放进去
+                        new_root = root + '/' + new_folder  # 在当前文件夹下再创建新文件夹
                         print('    >创建独立的文件夹完成')
                         if subt_name:
-                            os.rename(root + '\\' + subt_name, root + '\\' + new_folder + '\\' + subt_name)  # 就把字幕放进去
+                            os.rename(root + '/' + subt_name, root + '/' + new_folder + '/' + subt_name)  # 就把字幕放进去
                             print('    >移动字幕到独立文件夹')
 
                 # 更新一下relative_path
-                relative_path = '\\' + new_root.lstrip(path) + '\\' + file  # 影片的相对于所选文件夹的路径，用于报错
+                relative_path = '/' + new_root.lstrip(path) + '/' + file  # 影片的相对于所选文件夹的路径，用于报错
 
                 # 3写入nfo
                 if if_nfo:
@@ -578,7 +577,7 @@ while start_key == '':
                     for i in title_list:
                         cus_title += nfo_dict[i]
                     # 写入nfo开始
-                    info_path = new_root + '\\' + new_mp4 + '.nfo'
+                    info_path = new_root + '/' + new_mp4 + '.nfo'
                     # 开始写入nfo
                     f = open(info_path, 'w', encoding="utf-8")
                     f.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>\n"
@@ -612,8 +611,8 @@ while start_key == '':
                 # 4需要两张图片
                 if if_jpg == '是':
                     # fanart和poster路径
-                    fanart_path = new_root + '\\'
-                    poster_path = new_root + '\\'
+                    fanart_path = new_root + '/'
+                    poster_path = new_root + '/'
                     for i in fanart_list:
                         fanart_path += nfo_dict[i]
                     for i in poster_list:
@@ -661,16 +660,16 @@ while start_key == '':
                     if separate_folder and classify_root.startswith(root):
                         print('    >无法归类，请选择该文件夹的上级目录作它的归类根目录', root.lstrip(path))
                         continue
-                    class_root = classify_root + '\\'
+                    class_root = classify_root + '/'
                     # 对归类标准再细化
                     for j in classify_list:
-                        class_root += nfo_dict[j].rstrip(' .')  # C:\\Users\\JuneRain\\Desktop\\测试文件夹\\1\\葵司\\
-                    new_new_root = class_root + new_folder  # 移动的目标文件夹 C:\\Users\\JuneRain\\Desktop\\测试文件夹\\1\\葵司\\【葵司】AVOP-127
+                        class_root += nfo_dict[j].rstrip(' .')  # C:/Users/JuneRain/Desktop/测试文件夹/1/葵司/
+                    new_new_root = class_root + new_folder  # 移动的目标文件夹 C:/Users/JuneRain/Desktop/测试文件夹/1/葵司/【葵司】AVOP-127
                     if not os.path.exists(new_new_root):    # 不存在目标目录
                         os.makedirs(new_new_root)
                         jav_files = os.listdir(new_root)
                         for i in jav_files:
-                            os.rename(new_root + '\\' + i, new_new_root + '\\' + i)
+                            os.rename(new_root + '/' + i, new_new_root + '/' + i)
                         os.rmdir(new_root)
                         print('    >归类文件夹完成')
                     else:

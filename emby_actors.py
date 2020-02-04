@@ -45,7 +45,7 @@ try:
                 break
             else:
                 continue
-            actor_path = '女优头像\\' + file
+            actor_path = '女优头像/' + file
             f = open(actor_path, 'rb')            # 二进制方式打开图文件
             b6_pic = base64.b64encode(f.read())   # 读取文件内容，转换为base64编码
             f.close()
@@ -57,7 +57,7 @@ try:
             # print(url)
             # os.system('pause')
             respones = requests.post(url=url, data=b6_pic, headers=header)
-            suc_path = '女优头像\\设置成功\\' + file
+            suc_path = '女优头像/设置成功/' + file
             suc_num += 1
             try:
                 os.rename(actor_path, suc_path)

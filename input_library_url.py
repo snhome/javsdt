@@ -174,7 +174,7 @@ else:
 nfo_dict = {'空格': ' ', '车牌': 'ABC-123', '标题': '未知标题', '完整标题': '完整标题', '导演': '未知导演',
             '发行年月日': '1970-01-01', '发行年份': '1970', '月': '01', '日': '01', '是否中字': '', '是否xx': '',
             '片商': '未知片商', '评分': '0', '首个女优': '未知演员', '全部女优': '未知演员', '车牌前缀': 'ABC',
-            '片长': '0', '\\': '\\', '视频': 'ABC-123', '影片类型': movie_type, '系列': '未知系列'}  # 用于暂时存放影片信息，女优，标题等
+            '片长': '0', '/': '/', '视频': 'ABC-123', '影片类型': movie_type, '系列': '未知系列'}  # 用于暂时存放影片信息，女优，标题等
 rename_mp4_list = rename_mp4.split('+')
 title_list = custom_title.replace('标题', '完整标题', 1).split('+')
 fanart_list = custom_fanart.split('+')
@@ -222,7 +222,7 @@ while 1:
 
         print('>>正在处理：', title)
         # 去除title中的特殊字符
-        title = title.replace('\n', '').replace('&', '和').replace('\\', '#')\
+        title = title.replace('\n', '').replace('&', '和').replace('/', '#')\
                .replace('/', '#').replace(':', '：').replace('*', '#').replace('?', '？')\
                .replace('"', '#').replace('<', '【').replace('>', '】')\
                .replace('|', '#').replace('＜', '【').replace('＞', '】')\
@@ -321,7 +321,7 @@ while 1:
                     if len(right_review) != 0:
                         plot_review = plot_review + right_review[-1].replace('&', '和') + '////'
                         continue
-                plot_review = plot_review.replace('\n', '').replace('&', '和').replace('\\', '#') \
+                plot_review = plot_review.replace('\n', '').replace('&', '和').replace('/', '#') \
                     .replace(':', '：').replace('*', '#').replace('?', '？') \
                     .replace('"', '#').replace('<', '【').replace('>', '】') \
                     .replace('|', '#').replace('＜', '【').replace('＞', '】') \
@@ -377,7 +377,7 @@ while 1:
                                     for line in plot_br.split('<br />'):
                                         line = line.strip()
                                         plot += line
-                                    plot = plot.replace('\n', '').replace('&', '和').replace('\\', '#') \
+                                    plot = plot.replace('\n', '').replace('&', '和').replace('/', '#') \
                                         .replace('/', '#').replace(':', '：').replace('*', '#').replace('?', '？') \
                                         .replace('"', '#').replace('<', '【').replace('>', '】') \
                                         .replace('|', '#').replace('＜', '【').replace('＞', '】') \
@@ -428,7 +428,7 @@ while 1:
             for i in title_list:
                 cus_title += nfo_dict[i]
             # 写入nfo开始
-            info_path = root + '\\' + new_mp4 + '.nfo'      #nfo存放的地址
+            info_path = root + '/' + new_mp4 + '.nfo'      #nfo存放的地址
             # 开始写入nfo，这nfo格式是参考的emby的nfo
             f = open(info_path, 'w', encoding="utf-8")
             f.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>\n"
@@ -471,8 +471,8 @@ while 1:
             # 下载海报的地址 cover
             cover_url = 'http:' + cover_url
             # fanart和poster路径
-            fanart_path = new_root + '\\'
-            poster_path = new_root + '\\'
+            fanart_path = new_root + '/'
+            poster_path = new_root + '/'
             for i in fanart_list:
                 fanart_path += nfo_dict[i]
             for i in poster_list:
@@ -525,11 +525,11 @@ while 1:
                 print('    >未知演员')
             else:
                 for each_actor in actors:
-                    exist_actor_path = '女优头像\\' + each_actor + '.jpg'
+                    exist_actor_path = '女优头像/' + each_actor + '.jpg'
                     # print(exist_actor_path)
                     jpg_type = '.jpg'
                     if not os.path.exists(exist_actor_path):  # 女优jpg图片还没有
-                        exist_actor_path = '女优头像\\' + each_actor + '.png'
+                        exist_actor_path = '女优头像/' + each_actor + '.png'
                         if not os.path.exists(exist_actor_path):  # 女优png图片还没有
                             print('    >没有女优头像：' + each_actor + '\n')
                             config_actor = configparser.ConfigParser()
@@ -543,10 +543,10 @@ while 1:
                             continue
                         else:
                             jpg_type = '.png'
-                    actors_path = new_root + '\\.actors\\'
+                    actors_path = new_root + '/.actors/'
                     if not os.path.exists(actors_path):
                         os.makedirs(actors_path)
-                    shutil.copyfile('女优头像\\' + each_actor + jpg_type,
+                    shutil.copyfile('女优头像/' + each_actor + jpg_type,
                                     actors_path + each_actor + jpg_type)
                     print('    >女优头像收集完成：', each_actor)
 
