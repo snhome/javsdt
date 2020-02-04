@@ -106,6 +106,8 @@ def download_pic(cov_list):
     else:
         raise Exception('    >下載多次，仍然失敗！')
 
+def nfo_exist(files):
+    return next((True for f in files if f.endswith('nfo')), False)
 
 # 每一部jav的“結構體”
 class JavFile(object):
@@ -362,7 +364,7 @@ while start_key == '':
         if if_classify == '是' and root.startswith(classify_root):
             # print('>>該文件夾在歸類的根目錄中，跳過處理...', root)
             continue
-        if if_exnfo == '是' and files and (files[-1].endswith('nfo') or (len(files) > 1 and files[-2].endswith('nfo'))):
+        if if_exnfo == '是' and files and nfo_exist(files):
             continue
         # 對這一層文件夾進行評估,有多少視頻，有多少同車牌視頻，是不是獨立文件夾
         jav_videos = []  # 存放：需要整理的jav的結構體
