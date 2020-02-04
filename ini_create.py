@@ -22,7 +22,7 @@ try:
     config_settings.set("歸類影片", "是否歸類影片？", "否")
     config_settings.set("歸類影片", "針對文件還是文件夾？", "文件夾")
     config_settings.set("歸類影片", "歸類的根目錄", "所選文件夾")
-    config_settings.set("歸類影片", "歸類的標準", "影片類型\系列\首個女優")
+    config_settings.set("歸類影片", "歸類的標準", "影片類型/系列/首個女優")
     config_settings.add_section("下載封面")
     config_settings.set("下載封面", "是否下載封面海報？", "是")
     config_settings.set("下載封面", "DVD封面的格式", "視頻+-fanart.jpg")
