@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import requests, re, os, shutil, configparser, time, hashlib, json, traceback
+import requests, re, sys, os, shutil, configparser, time, hashlib, json, traceback
 from PIL import Image
 from time import sleep
 from tkinter import filedialog, Tk
@@ -15,16 +15,12 @@ def write_fail(fail_m):
 
 # get_directory功能為獲取用户選取的文件夾路徑
 def get_directory():
-    directory_root = Tk()
-    directory_root.withdraw()
-    work_path = filedialog.askdirectory()
-    if work_path == '':
-        print('你沒有選擇目錄! 請重新選：')
-        sleep(2)
-        return get_directory()
+    if os.path.exists(sys.argv[1]):
+        path = os.path.abspath(sys.argv[1])
     else:
-        # askdirectory 獲得是 正斜槓 路徑C:/，所以下面要把 / 換成 反斜槓\
-        return work_path
+        print("Cannot find " + sys.argv[1])
+        exit()
+    return path
 
 
 # 調用百度翻譯API接口，返回中文簡介str
@@ -699,4 +695,4 @@ while start_key == '':
     else:
         print('沒有處理失敗的AV，幹得漂亮！  ', path, '\n')
 
-    start_key = input('回車繼續選擇文件夾整理：')
+    start_key = 'skip'
