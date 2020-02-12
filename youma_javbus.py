@@ -165,6 +165,8 @@ try:
     custom_xx = config_settings.get("原影片文件的性質", "是否xx的表現形式")
     movie_type = config_settings.get("原影片文件的性質", "有碼")
     part_prefix = config_settings.get("分段文件", "分段前序")
+    actors_source = config_settings.get("kodi專用", "女優頭像位置")
+
 except:
     print(traceback.format_exc())
     print('\n無法讀取ini文件，請修改它為正確格式，或者打開“【ini】重新創建ini.exe”創建全新的ini！')
@@ -172,7 +174,7 @@ except:
 
 # 確認：女優頭像ini及頭像文件夾
 if if_sculpture == '是':
-    if not os.path.exists('女優頭像'):
+    if not os.path.exists(actors_source):
         print('\n“女優頭像”文件夾丟失！請把它放進exe的文件夾中！\n')
         os.system('pause')
     if not os.path.exists('【缺失的女優頭像統計For Kodi】.ini'):
@@ -959,10 +961,10 @@ while start_key == '':
                         print('    >未知演員')
                     else:
                         for each_actor in actors:
-                            exist_actor_path = '女優頭像/' + each_actor + '.jpg'
+                            exist_actor_path = actors_source + '/' + each_actor + '.jpg'
                             jpg_type = '.jpg'
                             if not os.path.exists(exist_actor_path):  # 女優jpg圖片還沒有
-                                exist_actor_path = '女優頭像/' + each_actor + '.png'
+                                exist_actor_path = actors_source + '/' + each_actor + '.png'
                                 if not os.path.exists(exist_actor_path):  # 女優png圖片還沒有
                                     fail_times += 1
                                     fail_message = '    >第' + str(
@@ -984,7 +986,7 @@ while start_key == '':
                             actors_path = new_root + '/.actors/'
                             if not os.path.exists(actors_path):
                                 os.makedirs(actors_path)
-                            shutil.copyfile('女優頭像/' + each_actor + jpg_type,
+                            shutil.copyfile(actors_source + '/' + each_actor + jpg_type,
                                             actors_path + each_actor + jpg_type)
                             print('    >女優頭像收集完成：', each_actor)
 
