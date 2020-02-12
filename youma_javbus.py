@@ -127,6 +127,10 @@ print('正在讀取ini中的設置...', end='')
 try:
     config_settings = configparser.RawConfigParser()
     config_settings.read('ini的設置會影響所有exe的操作結果.ini', encoding='utf-8-sig')
+    rating_settings = configparser.RawConfigParser()
+    if os.path.isfile('rating.ini'):
+        rating_settings.read('rating.ini', encoding='utf-8-sig')
+
     if_nfo = config_settings.get("收集nfo", "是否收集nfo？")
     if_exnfo = config_settings.get("收集nfo", "是否跳過已存在nfo的文件夾？")
     custom_title = config_settings.get("收集nfo", "nfo中title的格式")
@@ -642,8 +646,10 @@ while start_key == '':
                     if len(actors) > 7:
                         actors = actors[:7]
                     nfo_dict['首個女優'] = actors[0]
+                    nfo_dict['userrating'] = rating_settings.get('actor', actors[0], fallback= '0')
                     nfo_dict['全部女優'] = ' '.join(actors)
                 else:
+                    nfo_dict['userrating'] = '0'
                     nfo_dict['首個女優'] = nfo_dict['全部女優'] = '未知演員'
                     actors = ['未知演員']
                 nfo_dict['標題'] = nfo_dict['標題'].rstrip(nfo_dict['全部女優'])
@@ -877,7 +883,8 @@ while start_key == '':
                             "  <studio>" + nfo_dict['片商'] + "</studio>\n"
                             "  <id>" + nfo_dict['車牌'] + "</id>\n"
                             "  <num>" + nfo_dict['車牌'] + "</num>\n"
-                            "  <set>" + series + "</set>\n")
+                            "  <set>" + series + "</set>\n"
+                            "  <userrating>" + nfo_dict['userrating'] + "</userrating>\n")
                     if simp_trad == '簡':
                         for i in genres:
                             f.write("  <genre>" + gen_dict[i] + "</genre>\n")
