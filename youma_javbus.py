@@ -164,6 +164,7 @@ try:
     xx_words = config_settings.get("原影片文件的性質", "是否xx即文件名包含")
     custom_xx = config_settings.get("原影片文件的性質", "是否xx的表現形式")
     movie_type = config_settings.get("原影片文件的性質", "有碼")
+    part_prefix = config_settings.get("分段文件", "分段前序")
 except:
     print(traceback.format_exc())
     print('\n無法讀取ini文件，請修改它為正確格式，或者打開“【ini】重新創建ini.exe”創建全新的ini！')
@@ -775,7 +776,7 @@ while start_key == '':
                     new_mp4 = new_mp4.rstrip(' ')
                     cd_msg = ''
                     if cars_dic[car_num] > 1:    # 是CD1還是CDn？
-                        cd_msg = '-cd' + str(srt.episodes)
+                        cd_msg = part_prefix + str(srt.episodes)
                         new_mp4 += cd_msg
                     # rename mp4
                     os.rename(root + '/' + file, root + '/' + new_mp4 + video_type)
