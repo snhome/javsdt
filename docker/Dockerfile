@@ -23,8 +23,14 @@ ENV LC_ALL=C.UTF-8 \
 RUN pip install pillow==6.0.0
 RUN pip install baidu-aip
 
-RUN mkdir -p /root/xxvideo
-RUN chmod 777 /root/xxvideo
+RUN mkdir -p /root/xxvideo && \
+    mkdir -p /root/xxvideo_usb && \
+    mkdir -p /root/jvr && \
+    mkdir -p /root/jvr_usb1 && \
+    mkdir -p /root/jvr_usb2
+
+RUN chmod 777 /root/*
+
 RUN cd /root && git clone --depth=1 https://github.com/snhome/javsdt.git
 
 SHELL ["/bin/bash", "-c"]

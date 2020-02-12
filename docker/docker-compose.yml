@@ -6,3 +6,7 @@ services:
     volumes:
       # Specify an absolute path mapping
       # - /volume4/XXVideo:/root/xxvideo
+      # - /volumeUSB3/usbshare/XXVideo:/root/xxvideo_usb
+      # - /volume2/XXVideo-JVR:/root/jvr
+      # - /volumeUSB1/usbshare/XXVideo-JVR:/root/jvr_usb1
+      # - /volumeUSB4/usbshare/XXVideo-JVR:/root/jvr_usb2
