@@ -1,0 +1,8 @@
+version: '3'
+services:
+  getsub:
+    build: .
+    container_name: autojavsdt
+    volumes:
+      # Specify an absolute path mapping
+      # - /volume4/XXVideo:/root/xxvideo
