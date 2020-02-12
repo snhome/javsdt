@@ -127,7 +127,7 @@ print('正在讀取ini中的設置...', end='')
 try:
     config_settings = configparser.RawConfigParser()
     config_settings.read('ini的設置會影響所有exe的操作結果.ini', encoding='utf-8-sig')
-    rating_settings = configparser.RawConfigParser()
+    rating_settings = configparser.RawConfigParser(strict=False)
     if os.path.isfile('rating.ini'):
         rating_settings.read('rating.ini', encoding='utf-8-sig')
 
