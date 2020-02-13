@@ -7,7 +7,7 @@ RUN apt-get install -y sudo curl
 RUN apt-get install -y bash bash-doc bash-completion
 RUN apt-get install -y util-linux pciutils usbutils coreutils binutils findutils grep
 RUN apt-get install -y build-essential libssl-dev
-RUN apt-get install -y git
+RUN apt-get install -y git vim
 # Install language pack
 RUN apt-get install -y locales
 RUN locale-gen zh_TW zh_TW.UTF-8 zh_CN.UTF-8 en_US en_US.UTF-8 C.UTF-8
@@ -32,6 +32,9 @@ RUN mkdir -p /root/xxvideo && \
 RUN chmod 777 /root/*
 
 RUN cd /root && git clone --depth=1 https://github.com/snhome/javsdt.git
+
+RUN echo 'alias javbus="python3 /root/javsdt/youma_javbus.py"' >> ~/.bashrc
+RUN echo 'alias javlib="python3 /root/javsdt/youma_javlibrary.py"' >> ~/.bashrc
 
 SHELL ["/bin/bash", "-c"]
 
